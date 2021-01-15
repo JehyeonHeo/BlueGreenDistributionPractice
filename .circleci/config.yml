@@ -37,14 +37,11 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - run:
-          name: update for apt
-          command: apt update
-      - run:
-          name: upgrade for packages
-          command: apt upgrade
+          name: update for yum
+          command: yum update
       - run:
           name: install tar to use persist_to_workspace step
-          command: apt install -y tar
+          command: yum install -y tar
       - run:
           name: "Retrieve last production deployment ID using list-exports function"
           command: >-
