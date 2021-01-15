@@ -7,7 +7,7 @@ orbs:
 
 parameters:
   old_pipeline_id:
-    type: String
+    type: string
     default: "lastproductionbucket"
 
 commands:
