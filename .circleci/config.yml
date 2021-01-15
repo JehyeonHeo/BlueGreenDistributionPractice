@@ -38,13 +38,13 @@ jobs:
     steps:
       - run:
           name: update for apt
-          command: apt-get update
+          command: apt update
       - run:
           name: upgrade for packages
-          command: apt-get upgrade
+          command: apt upgrade
       - run:
           name: install tar to use persist_to_workspace step
-          command: apt-get install -y tar
+          command: apt install -y tar
       - run:
           name: "Retrieve last production deployment ID using list-exports function"
           command: >-
