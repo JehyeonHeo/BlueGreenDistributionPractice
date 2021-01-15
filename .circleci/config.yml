@@ -30,8 +30,7 @@ jobs:
             aws cloudformation deploy
             --template-file bucket.yml
             --stack-name "ID-${CIRCLE_WORKFLOW_ID:0:7}" 
-            --parameter-overrides PipelineID="ID-${CIRCLE_WORKFLOW_ID:0:7}"
-            --parameter-overrides NAME=$old_pipeline_id
+            --parameter-overrides NAME="ID-${CIRCLE_WORKFLOW_ID:0:7}"
 
   get_last_deployment_id:
     docker:
