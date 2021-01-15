@@ -41,7 +41,7 @@ jobs:
           command: yum update
       - run:
           name: install tar to use persist_to_workspace step
-          command: yum install -y tar
+          command: yum install -y tar gzip
       - run:
           name: "Retrieve last production deployment ID using list-exports function"
           command: >-
