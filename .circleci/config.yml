@@ -31,6 +31,11 @@ jobs:
             --template-file bucket.yml
             --stack-name "id-${CIRCLE_WORKFLOW_ID:0:7}" 
             --parameter-overrides NAME="id-${CIRCLE_WORKFLOW_ID:0:7}"
+      - run:
+          name: copy updated index.html file to new S3 bucket.
+          command: >-
+            aws s3 cp index.html 
+            "s3://id-${CIRCLE_WORKFLOW_ID:0:7}.s3.amazonaws.com/index.html"
 
   get_last_deployment_id:
     docker:
@@ -72,14 +77,14 @@ jobs:
     docker:
       - image: amazon/aws-cli
     steps:
+      - checkout
+      - set_region
       - run:
           name: update for yum
           command: yum update
       - run:
           name: install tar to use persist_to_workspace step
           command: yum install -y tar gzip
-      - checkout
-      - set_region
       - attach_workspace:
           at: .
       - run:
