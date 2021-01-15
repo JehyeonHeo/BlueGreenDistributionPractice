@@ -5,12 +5,18 @@ orbs:
   # Declare a dependency on the welcome-orb
   welcome: circleci/welcome-orb@0.4.1
 
+commands:
+  set_region:
+    steps:
+      - run: aws configure set region ap-northeast-2
+
 jobs:
   create_and_deploy_front_end:
     docker:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - set_region 
       - run:
           name: run bucket.yml file to create/update stack for new S3.
           command: >-
@@ -18,7 +24,6 @@ jobs:
             --template-file bucket.yml
             --stack-name "${CIRCLE_WORKFLOW_ID:0:7}" 
             --parameter-overrides PipelineID="${CIRCLE_WORKFLOW_ID:0:7}"
-            --region ap-northeast-2
 
   get_last_deployment_id:
     docker:
@@ -41,6 +46,7 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - set_region
       - run:
           name: Deploy using same stack with new pipelineID
           command: >-
@@ -48,13 +54,13 @@ jobs:
             --template-file cloudfront.yml
             --stack-name production-distro
             --parameter-overrides PipelineID="${CIRCLE_WORKFLOW_ID}"
-            --region ap-northeast-2
 
   clean_up_old_front_end:
     docker:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - set_region
       - attach_workspace:
           at: .
       - run:
@@ -65,7 +71,6 @@ jobs:
           command: >-
             aws cloudformation delete-stack
             --stack-name "$(<text)"
-            --region ap-northeast-2
 
 # Orchestrate or schedule a set of jobs
 workflows:
