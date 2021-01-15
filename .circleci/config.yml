@@ -5,6 +5,11 @@ orbs:
   # Declare a dependency on the welcome-orb
   welcome: circleci/welcome-orb@0.4.1
 
+parameters:
+  old_pipeline_id:
+    type: String
+    default: "lastproductionbucket"
+
 commands:
   set_region:
     steps:
@@ -26,6 +31,7 @@ jobs:
             --template-file bucket.yml
             --stack-name "ID-${CIRCLE_WORKFLOW_ID:0:7}" 
             --parameter-overrides PipelineID="ID-${CIRCLE_WORKFLOW_ID:0:7}"
+            --parameter-overrides NAME=$old_pipeline_id
 
   get_last_deployment_id:
     docker:
@@ -67,7 +73,7 @@ jobs:
           at: .
       - run:
           name: Remove old version S3 bucket.
-          command: aws s3 rm "s3://lastproductionbucket.s3.amazonaws.com" --recursive
+          command: aws s3 rm "s3://$(old_pipeline_id).s3.amazonaws.com" --recursive
       - run:
           name: Delete new stack which was made for production testing
           command: >-
