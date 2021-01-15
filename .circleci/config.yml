@@ -37,6 +37,15 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - run:
+          name: update for apt
+          command: sudo apt-get update
+      - run:
+          name: upgrade for packages
+          command: sudo apt-get upgrade
+      - run:
+          name: install tar to use persist_to_workspace step
+          command: sudo apt-get install -y tar
+      - run:
           name: "Retrieve last production deployment ID using list-exports function"
           command: >-
             aws cloudformation list-exports
