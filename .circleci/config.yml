@@ -89,7 +89,7 @@ jobs:
           at: .
       - run:
           name: Remove old version S3 bucket.
-          command: aws s3 rm "s3://${old_pipeline_id}" --recursive
+          command: aws s3 rm "s3://<< pipeline.parameters.old_pipeline_id >>" --recursive
       - run:
           name: Delete new stack which was made for production testing
           command: >-
